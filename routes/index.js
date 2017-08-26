@@ -3,7 +3,11 @@ var router = express.Router();
 var User = require('../models/user');
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../config/config');
+<<<<<<< HEAD
 
+=======
+var app=express();
+>>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -27,6 +31,7 @@ router.get('/setup', function(req, res) {
   });
 });
 
+<<<<<<< HEAD
 router.use(function(req, res, next) {
 
   // check header or url parameters or post parameters for token
@@ -57,6 +62,9 @@ router.use(function(req, res, next) {
 
   }
 });
+=======
+
+>>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
 // route to return all users (GET http://localhost:8080/api/users)
 router.get('/user', function(req, res) {
   User.find({}, function(err, users) {
@@ -84,7 +92,11 @@ router.post('/auth', function(req, res) {
 
         // if user is found and password is right
         // create a token
+<<<<<<< HEAD
         var token = jwt.sign(user, 'scotch', {
+=======
+        var token = jwt.sign(user, app.get('supersecret'), {
+>>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
           expiresIn: 3600 // expires in 24 hours
         });
 
@@ -100,7 +112,10 @@ router.post('/auth', function(req, res) {
 
   });
 });
+<<<<<<< HEAD
 //users
 
+=======
+>>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
 
 module.exports = router;

@@ -12,7 +12,11 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 
 var app = express();
+<<<<<<< HEAD
 mongoose.connect('mongodb://ravb:nc1mx@ds139899.mlab.com:39899/testseries',function(err,res){
+=======
+mongoose.connect('localhost:27017/Apcrab',function(err,res){
+>>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
 if(err)
 {
 console.log("not")
