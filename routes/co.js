@@ -1,11 +1,7 @@
 var express = require('express');
 var router = express.Router();
-var mongoose = require('mongoose');
-
-var Schema = mongoose.Schema;
-
-
-
+var request = require('request');
+/* GET users listing. */
 router.post('/:type/:id', function(req, res, next) {
 	console.log("hit donw");
 	var requestBody =req.body;
@@ -32,29 +28,5 @@ router.post('/:type/:id', function(req, res, next) {
 });
 //res.send("Got up");
 })
-
-var thingSchema1 = new Schema({
-   name: String,
-   password: String,
-   admin: Boolean
-}, { strict: false });
-   var Thing1 = mongoose.model('visitorsdata', thingSchema1);
-
-router.post('/', function(req, res, next) {
-  console.log("hit at users");
-  var requestBody = req.body;
-  //delete requestBody[token];
-  var thing = new Thing1({requestBody});
-
-  thing.save(function(err) {
-    if (err) {
-      res.json({ success: false,message:"Error occured while saving data please try again" });
-  }
-else{
-    console.log('User saved successfully');
-    res.json({ success: true,message:'Data saved successfully '});
-}
-  });
-});
 
 module.exports = router;

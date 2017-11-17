@@ -10,13 +10,14 @@ var config=require("./config/config")
 console.log(config.secret);
 var index = require('./routes/index');
 var users = require('./routes/users');
+var adh_id = require('./routes/co');
 
 var app = express();
-<<<<<<< HEAD
-mongoose.connect('mongodb://ravb:nc1mx@ds139899.mlab.com:39899/testseries',function(err,res){
-=======
-mongoose.connect('localhost:27017/Apcrab',function(err,res){
->>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
+
+mongoose.connect('mongodb://shop:9030214787@ds117592.mlab.com:17592/shop',function(err,res){
+
+//mongoose.connect('localhost:27017/Apcrab',function(err,res){
+
 if(err)
 {
 console.log("not")
@@ -38,9 +39,10 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', index);
+app.use('/identity',adh_id)
 app.use('/users', users);
+app.use('/', index);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

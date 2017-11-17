@@ -1,42 +1,73 @@
 var express = require('express');
 var router = express.Router();
-var User = require('../models/user');
+var User = require('../models/boys');
 var jwt    = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var config = require('../config/config');
-<<<<<<< HEAD
-
-=======
+var mongoose = require('mongoose');
+var Schema = mongoose.Schema;
 var app=express();
->>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
+ var thingSchema = new Schema({
+    name: String,
+    password: String,
+    admin: Boolean
+}, { strict: false });
+    var Thing = mongoose.model('client', thingSchema);
+    
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-router.get('/setup', function(req, res) {
 
-  // create a sample user
-  var nick = new User({
-    name: 'Cerminara',
-    password: 'password',
-    admin: true
-  });
 
-  // save the sample user
-  nick.save(function(err) {
+
+router.post('/auth', function(req, res) {
+
+  // find the user
+  console.log("go hit");
+  User.findOne({
+    username: req.body.username
+  }, function(err, user) {
+
     if (err) throw err;
 
-    console.log('User saved successfully');
-    res.json({ success: true });
-  });
+    if (!user) {
+      res.json({ success: false, message: 'Authentication failed. User not found.' });
+    } else if (user) {
+
+      // check if password matches
+      if (user.password != req.body.password) {
+        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+      } else {
+
+        // if user is found and password is right
+        // create a token
+
+        var token = jwt.sign(user, 'scotch', {
+
+       
+
+          expiresIn: 3600 // expires in 24 hours
+		});
+
+        // return the information including token as JSON
+        res.json({
+          success: true,
+          message: 'Enjoy your token!',
+          token: token
+        });
+      
+
+    }
+	}
+
+  
+});
 });
 
-<<<<<<< HEAD
+
+
 router.use(function(req, res, next) {
 
   // check header or url parameters or post parameters for token
   var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
+console.log("hit at token"+token);
   // decode token
   if (token) {
 
@@ -62,60 +93,31 @@ router.use(function(req, res, next) {
 
   }
 });
-=======
 
->>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
-// route to return all users (GET http://localhost:8080/api/users)
-router.get('/user', function(req, res) {
-  User.find({}, function(err, users) {
-    res.json(users);
+
+router.post('/setup', function(req, res) {
+
+  // create a sample user
+  console.log("hit at setipt");
+  var requestBody = req.body;
+  //delete requestBody[token];
+  var thing = new Thing({requestBody});
+  
+  thing.save(function(err) {
+    if (err) {
+		  res.json({ success: false,message:"Error occured while saving data please try again" });
+	}
+else{
+    console.log('User saved successfully');
+    res.json({ success: true,message:'Data saved successfully '});
+}
   });
+  
+
 });
 
-router.post('/auth', function(req, res) {
-
-  // find the user
-  User.findOne({
-    name: req.body.name
-  }, function(err, user) {
-
-    if (err) throw err;
-
-    if (!user) {
-      res.json({ success: false, message: 'Authentication failed. User not found.' });
-    } else if (user) {
-
-      // check if password matches
-      if (user.password != req.body.password) {
-        res.json({ success: false, message: 'Authentication failed. Wrong password.' });
-      } else {
-
-        // if user is found and password is right
-        // create a token
-<<<<<<< HEAD
-        var token = jwt.sign(user, 'scotch', {
-=======
-        var token = jwt.sign(user, app.get('supersecret'), {
->>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
-          expiresIn: 3600 // expires in 24 hours
-        });
-
-        // return the information including token as JSON
-        res.json({
-          success: true,
-          message: 'Enjoy your token!',
-          token: token
-        });
-      }
-
-    }
-
-  });
-});
-<<<<<<< HEAD
 //users
 
-=======
->>>>>>> ddae33eb929d173fe8111652567adfa414838b5f
+
 
 module.exports = router;
